@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
+import { SketchfabEmbed } from "@/components/SketchfabEmbed";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { CATEGORIES, PRODUCTS, SNEAKER_LINES, STREET_BRANDS, SUB_LABELS, byCategory, bySub, countBy, img, type Category } from "@/lib/catalog";
 
@@ -170,29 +171,36 @@ export default function Home() {
       {/* pitch 3D */}
       <section id="historia" className="relative overflow-hidden border-t border-line" aria-labelledby="pitch">
         <div className="glow absolute inset-0" aria-hidden />
-        <div className="relative mx-auto grid max-w-[1400px] gap-10 px-5 py-20 sm:px-8 sm:py-28 md:grid-cols-2">
+        <div className="relative mx-auto grid max-w-[1400px] items-center gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1fr_1.2fr]">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Por que 3D</span>
             <h2 id="pitch" className="display mt-1 text-balance text-6xl sm:text-7xl">
               Menos “será que é assim?”, mais compra.
             </h2>
-          </div>
-          <div className="space-y-5 text-fg-muted">
-            <p>
-              A Boneti cresceu no WhatsApp, uma foto por vez. O catálogo já tem mais de 600 produtos e 380 tênis — e cada venda ainda depende de a foto convencer.
-            </p>
-            <p>
-              Com modelos 3D por SKU, o cliente gira, aproxima e compara cores antes de pedir. Menos dúvida no atendimento, menos troca por expectativa errada, mais tempo em página.
-            </p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/produto/tenis-nk-air-max-95-x-corteiz-pink-beam" className="display rounded-sm bg-accent px-6 py-3 text-xl text-accent-ink transition hover:brightness-110">
-                Testar o 3D
+            <div className="mt-6 space-y-5 text-fg-muted">
+              <p>
+                A Boneti cresceu no WhatsApp, uma foto por vez. O catálogo já tem mais de 600 produtos e 380 tênis — e cada venda ainda depende de a foto convencer.
+              </p>
+              <p>
+                Este é um exemplo de 3D profissional de tênis. Com cada par do estoque capturado assim, o cliente gira, aproxima e confere costura, sola e material antes de pedir: menos dúvida no atendimento, menos troca por expectativa errada.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/catalogo?cat=tenis" className="display rounded-sm bg-accent px-6 py-3 text-xl text-accent-ink transition hover:brightness-110">
+                Ver tênis
               </Link>
               <Link href="/catalogo" className="display rounded-sm border border-white/30 px-6 py-3 text-xl transition hover:border-accent hover:text-accent">
-                Ver catálogo
+                Catálogo completo
               </Link>
             </div>
           </div>
+          <SketchfabEmbed
+            modelId="8e4a7bbfb4b840598f828a7c0e7ffb1a"
+            title="Nike Air Jordan 1 Hi Flyease"
+            modelUrl="https://sketchfab.com/3d-models/nike-air-jordan-1-hi-flyease-8e4a7bbfb4b840598f828a7c0e7ffb1a"
+            author="Invrsion"
+            authorUrl="https://sketchfab.com/inVRsion"
+          />
         </div>
       </section>
     </>
