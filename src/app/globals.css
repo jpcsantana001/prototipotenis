@@ -185,9 +185,3 @@ body {
   filter: blur(18px);
   transition: background 900ms ease;
 }
-
-/* pixo: letra reta alongada (o alongamento vertical é feito no SVG) */
-.pixo-font {
-  font-family: "Anton", "Impact", sans-serif;
-  text-transform: uppercase;
-}
