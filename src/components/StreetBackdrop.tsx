@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useTransform, type MotionValue } from "motion/react";
-import { HERO_PHOTO_URL } from "@/lib/brand";
+import { FozBanner } from "@/components/FozBanner";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 /**
  * Fundo do hero com material original da Boneti:
- * - foto da campanha da loja (banner do site, recortado sem o texto impresso);
+ * - banner "muro de Foz do Iguaçu" (arte vetorial, ver FozBanner);
  * - logo oficial grande, com névoa de spray atrás.
  * Tudo decorativo (aria-hidden). A foto desliza com a rolagem (parallax).
  */
@@ -18,20 +17,13 @@ export function StreetBackdrop({ progress }: { progress: MotionValue<number> }) 
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      {/* foto da campanha */}
+      {/* banner: muro grafitado de Foz do Iguaçu */}
       <motion.div style={{ y: photoY, scale: photoScale }} className="absolute inset-x-0 -bottom-[5%] top-0">
-        <Image
-          src={HERO_PHOTO_URL}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[50%_35%] opacity-70 saturate-[1.15]"
-        />
+        <FozBanner className="h-full w-full" />
       </motion.div>
 
       {/* escurece em volta e no topo, deixando o centro respirar para o tênis 3D */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,rgba(11,11,12,0.45)_0%,rgba(11,11,12,0.82)_65%,#0b0b0c_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,rgba(11,11,12,0.25)_0%,rgba(11,11,12,0.55)_70%,rgba(11,11,12,0.9)_100%)]" />
       <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent" />
       <div className="halftone absolute inset-0 opacity-30 mix-blend-overlay" />
 
@@ -44,7 +36,6 @@ export function StreetBackdrop({ progress }: { progress: MotionValue<number> }) 
       </motion.div>
 
       {/* pichações nos cantos, longe dos textos dos capítulos */}
-      <span className="marker absolute left-[4%] top-[14%] hidden rotate-[-8deg] text-3xl text-white/35 md:block">Foz do Iguaçu</span>
       <span className="marker absolute right-[4%] top-[13%] hidden rotate-[6deg] text-2xl text-accent-2/60 md:block">+100k pedidos</span>
 
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
