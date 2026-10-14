@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -91,6 +91,8 @@ interface ShoeProps {
  */
 export function Shoe({ variant, scale = 1, ref }: ShoeProps & { ref?: React.Ref<THREE.Group> }) {
   const { scene, materials, gltf } = useShoe();
+  // fica invisível até a 1ª variante ser aplicada (evita flash da cor padrão do GLB)
+  const inner = useRef<THREE.Group>(null);
 
   useEffect(() => {
     if (!materials) return;
@@ -103,6 +105,7 @@ export function Shoe({ variant, scale = 1, ref }: ShoeProps & { ref?: React.Ref<
       gltf.parser.assignFinalMaterial(m);
       m.castShadow = true;
     });
+    if (inner.current) inner.current.visible = true;
   }, [variant, scene, materials, gltf]);
 
   // Centraliza o modelo na origem para rotações previsíveis.
@@ -114,7 +117,9 @@ export function Shoe({ variant, scale = 1, ref }: ShoeProps & { ref?: React.Ref<
 
   return (
     <group ref={ref} scale={scale}>
-      <primitive object={scene} position={offset} />
+      <group ref={inner} visible={false}>
+        <primitive object={scene} position={offset} />
+      </group>
     </group>
   );
 }

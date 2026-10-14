@@ -2,19 +2,19 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://boneti-3d.vercel.app"),
+  metadataBase: new URL("https://prototipotenis.vercel.app"),
   title: {
-    default: "Boneti Store — Tênis em 3D interativo",
+    default: "Boneti Store — Sneakers e streetwear em 3D",
     template: "%s · Boneti Store",
   },
   description:
-    "Explore cada tênis em 360°, troque de cor em tempo real e escolha seu tamanho. Entrega para todo o Brasil em até 12x.",
+    "Tênis, camisetas, moletons, conjuntos e acessórios com visualização 3D. +600 produtos, até 12x, envio para todo o Brasil.",
   openGraph: {
     type: "website",
     locale: "pt_BR",
     siteName: "Boneti Store",
-    title: "Boneti Store — Tênis em 3D interativo",
-    description: "Explore cada tênis em 360°, troque de cor em tempo real e escolha seu tamanho.",
+    title: "Boneti Store — Sneakers e streetwear em 3D",
+    description: "Tênis, camisetas, moletons e acessórios com visualização 3D.",
   },
 };
 
@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className="h-full">
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="grain flex min-h-full flex-col">{children}</body>
     </html>
   );
 }

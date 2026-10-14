@@ -1,128 +1,197 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { ProductCard } from "@/components/ui/ProductCard";
-import { PRODUCTS } from "@/lib/products";
+import { CATEGORIES, PRODUCTS, SNEAKER_LINES, STREET_BRANDS, SUB_LABELS, byCategory, bySub, countBy, img, type Category } from "@/lib/catalog";
 
-const FEATURES = [
-  {
-    title: "Veja em 360°",
-    body: "Todo produto tem modelo 3D real. Gire, aproxime e confira detalhes de textura, cadarço e solado.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
-        <circle cx="12" cy="12" r="9" />
-        <ellipse cx="12" cy="12" rx="9" ry="3.5" />
-        <path d="M12 3v18" />
-      </svg>
-    ),
-  },
-  {
-    title: "Troca de cor em tempo real",
-    body: "Compare as três colorways no mesmo ângulo, sem recarregar. O que você vê é o que chega.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
-        <path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-2 0-3 2 0 3 0 3-1 3-3a9 9 0 0 0-8-10Z" />
-        <circle cx="8" cy="10" r="1" />
-        <circle cx="12" cy="7" r="1" />
-        <circle cx="16" cy="10" r="1" />
-      </svg>
-    ),
-  },
-  {
-    title: "Entrega para todo o Brasil",
-    body: "Mais de 100 mil pedidos enviados. Rastreio em tempo real e troca grátis em até 30 dias.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
-        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" />
-        <circle cx="7" cy="18" r="1.6" />
-        <circle cx="17" cy="18" r="1.6" />
-      </svg>
-    ),
-  },
-];
+const subCounts = countBy((p) => p.subs);
+const catCounts = countBy((p) => p.category);
 
-const MARQUEE = ["+100 mil pedidos", "Até 12x sem juros", "Troca grátis em 30 dias", "Envio em 24h", "Atendimento humano no WhatsApp"];
+function cover(cat: Category) {
+  return byCategory(cat).find((p) => p.available && p.images[0]) ?? byCategory(cat)[0];
+}
+
+const TAPE = ["Air Max", "Dunk", "Jordan", "12 Molas", "Air Force", "New Balance", "Asics", "Corteiz", "Syna World", "Supreme", "Bape", "Hellstar", "Chrome Hearts", "Sp5der"];
 
 export default function Home() {
-  const featured = PRODUCTS.filter((p) => p.tag).slice(0, 3);
+  const fresh = PRODUCTS.filter((p) => p.available && p.images[0]).slice(0, 8);
+  const deals = PRODUCTS.filter((p) => p.available && p.discount > 0)
+    .sort((a, b) => b.discount - a.discount)
+    .slice(0, 4);
+  const sneakers = SNEAKER_LINES.filter((s) => subCounts[s] >= 3).slice(0, 8);
+  const brands = STREET_BRANDS.filter((b) => subCounts[b]);
 
   return (
     <>
       <Hero />
 
-      {/* marquee */}
-      <div className="overflow-hidden border-y border-line bg-bg-elev py-3" aria-hidden>
-        <div className="marquee flex w-max gap-10 whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em] text-fg-muted">
-          {[...MARQUEE, ...MARQUEE].map((m, i) => (
+      {/* fita de modelos */}
+      <div className="tape overflow-hidden py-3" aria-hidden>
+        <div className="marquee-rev display flex w-max gap-10 whitespace-nowrap text-3xl">
+          {[...TAPE, ...TAPE].map((m, i) => (
             <span key={i} className="flex items-center gap-10">
-              {m} <span className="h-1 w-1 rounded-full bg-accent" />
+              {m} <span className="h-2 w-2 rounded-full bg-accent-ink" />
             </span>
           ))}
         </div>
       </div>
 
-      {/* destaques */}
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28" aria-labelledby="destaques">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+      {/* chegou agora */}
+      <section className="mx-auto max-w-[1400px] px-5 py-16 sm:px-8 sm:py-24" aria-labelledby="novos">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">Destaques</span>
-            <h2 id="destaques" className="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Os mais pedidos da semana
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Drop da semana</span>
+            <h2 id="novos" className="display mt-1 text-6xl sm:text-7xl">
+              Chegou agora
             </h2>
           </div>
-          <Link href="/catalogo" className="text-sm text-fg-muted underline-offset-4 hover:text-fg hover:underline">
-            Ver todos os {PRODUCTS.length} modelos →
+          <Link href="/catalogo" className="text-xs font-semibold uppercase tracking-wider text-fg-muted underline-offset-4 hover:text-fg hover:underline">
+            Ver todos os {PRODUCTS.length} produtos →
           </Link>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p, i) => (
-            <ProductCard key={p.slug} product={p} priority={i === 0} />
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+          {fresh.map((p, i) => (
+            <ProductCard key={p.handle} product={p} priority={i < 4} />
           ))}
         </div>
       </section>
 
-      {/* por que */}
-      <section id="historia" className="border-t border-line bg-bg-elev" aria-labelledby="porque">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
-          <div className="max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">A marca</span>
-            <h2 id="porque" className="mt-2 text-balance font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Comprar tênis online sem a dúvida do “será que é assim mesmo?”
-            </h2>
-            <p className="mt-4 text-lg text-fg-muted">
-              A Boneti nasceu em Umuarama e cresceu no WhatsApp, uma foto de cada vez. Agora cada modelo vira um objeto 3D que você
-              examina como se estivesse na loja.
-            </p>
+      {/* categorias em tiles grandes */}
+      <section className="mx-auto max-w-[1400px] px-5 pb-16 sm:px-8 sm:pb-24" aria-labelledby="cats">
+        <h2 id="cats" className="sr-only">
+          Categorias
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-2">
+          {CATEGORIES.slice(0, 7).map((c, i) => {
+            const p = cover(c.key);
+            const big = i === 0;
+            return (
+              <Link
+                key={c.key}
+                href={`/catalogo?cat=${c.key}`}
+                className={`group relative overflow-hidden rounded-card border border-line bg-bg-card ${big ? "col-span-2 row-span-2 aspect-square md:aspect-auto" : "aspect-[4/5] md:aspect-auto md:min-h-56"}`}
+              >
+                {p?.images[0] && (
+                  <Image src={img(p.images[0], big ? 1200 : 700)} alt="" fill sizes={big ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"} className="object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 sm:p-5">
+                  <span className={`display ${big ? "text-6xl sm:text-8xl" : "text-3xl sm:text-4xl"}`}>{c.label}</span>
+                  <span className="rounded-sm bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest backdrop-blur">{catCounts[c.key]}</span>
+                </div>
+              </Link>
+            );
+          })}
+          <Link href="/catalogo?promo=1" className="group relative flex aspect-[4/5] items-end overflow-hidden rounded-card bg-accent p-4 text-accent-ink sm:p-5 md:aspect-auto md:min-h-56">
+            <span className="display text-3xl leading-[0.9] sm:text-4xl">
+              Até
+              <br />
+              50%
+              <br />
+              off
+            </span>
+            <span className="display absolute right-4 top-4 text-7xl opacity-20 transition group-hover:opacity-40">→</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* modelos de tênis */}
+      <section className="border-y border-line bg-bg-elev" aria-labelledby="modelos">
+        <div className="mx-auto max-w-[1400px] px-5 py-16 sm:px-8 sm:py-24">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">{catCounts.tenis} modelos em 3D</span>
+              <h2 id="modelos" className="display mt-1 text-6xl sm:text-7xl">
+                Escolha a linha
+              </h2>
+            </div>
+            <Link href="/catalogo?cat=tenis" className="text-xs font-semibold uppercase tracking-wider text-fg-muted underline-offset-4 hover:text-fg hover:underline">
+              Todos os tênis →
+            </Link>
           </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="rounded-card border border-line bg-bg-card p-6">
-                <div className="mb-5 inline-flex rounded-xl bg-accent/15 p-3 text-accent">{f.icon}</div>
-                <h3 className="font-display text-lg font-semibold">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-fg-muted">{f.body}</p>
-              </div>
-            ))}
+          <div className="scrollbar-none -mx-5 flex snap-x gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:px-0 lg:grid-cols-8">
+            {sneakers.map((s) => {
+              const p = bySub(s).find((x) => x.available && x.images[0]);
+              return (
+                <Link key={s} href={`/catalogo?cat=tenis&sub=${s}`} className="group relative w-40 shrink-0 snap-start overflow-hidden rounded-card border border-line bg-bg-card sm:w-auto">
+                  <div className="relative aspect-square">
+                    {p?.images[0] && <Image src={img(p.images[0], 500)} alt="" fill sizes="(min-width: 1024px) 12vw, 40vw" className="object-cover transition duration-500 group-hover:scale-105" />}
+                  </div>
+                  <div className="flex items-center justify-between px-3 py-2.5">
+                    <span className="display text-xl">{SUB_LABELS[s]}</span>
+                    <span className="text-[10px] text-fg-muted">{subCounts[s]}</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* CTA final */}
-      <section className="relative overflow-hidden" aria-labelledby="cta">
-        <div className="glow absolute inset-0" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-5 py-24 text-center sm:px-8 sm:py-32">
-          <h2 id="cta" className="text-balance font-display text-4xl font-bold tracking-tight sm:text-6xl">
-            Seu próximo par está a um giro de distância.
+      {/* marcas de rua */}
+      <section className="mx-auto max-w-[1400px] px-5 py-16 sm:px-8 sm:py-24" aria-labelledby="marcas">
+        <div className="mb-8">
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Streetwear</span>
+          <h2 id="marcas" className="display mt-1 text-6xl sm:text-7xl">
+            As marcas da rua
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-fg-muted">Explore o catálogo completo em 3D. Sem cadastro, sem app.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/catalogo" className="rounded-full bg-fg px-7 py-3.5 text-sm font-semibold text-bg transition hover:bg-white">
-              Ver catálogo
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {brands.map((b) => (
+            <Link key={b} href={`/catalogo?sub=${b}`} className="display rounded-sm border border-line px-5 py-3 text-3xl transition hover:border-accent hover:text-accent sm:text-4xl">
+              {SUB_LABELS[b]} <span className="text-base text-fg-faint">{subCounts[b]}</span>
             </Link>
-            <Link
-              href="/produto/runner-midnight"
-              className="rounded-full border border-white/20 px-7 py-3.5 text-sm font-semibold transition hover:border-white/50"
-            >
-              Abrir um modelo em 3D
+          ))}
+        </div>
+      </section>
+
+      {/* promos */}
+      {deals.length > 0 && (
+        <section className="mx-auto max-w-[1400px] px-5 pb-16 sm:px-8 sm:pb-24" aria-labelledby="promos">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-2">Queima</span>
+              <h2 id="promos" className="display mt-1 text-6xl sm:text-7xl">
+                Até 50% off
+              </h2>
+            </div>
+            <Link href="/catalogo?promo=1" className="text-xs font-semibold uppercase tracking-wider text-fg-muted underline-offset-4 hover:text-fg hover:underline">
+              Todas as ofertas →
             </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+            {deals.map((p) => (
+              <ProductCard key={p.handle} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* pitch 3D */}
+      <section id="historia" className="relative overflow-hidden border-t border-line" aria-labelledby="pitch">
+        <div className="glow absolute inset-0" aria-hidden />
+        <div className="relative mx-auto grid max-w-[1400px] gap-10 px-5 py-20 sm:px-8 sm:py-28 md:grid-cols-2">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Por que 3D</span>
+            <h2 id="pitch" className="display mt-1 text-balance text-6xl sm:text-7xl">
+              Menos “será que é assim?”, mais compra.
+            </h2>
+          </div>
+          <div className="space-y-5 text-fg-muted">
+            <p>
+              A Boneti cresceu no WhatsApp, uma foto por vez. O catálogo já tem mais de 600 produtos e 380 tênis — e cada venda ainda depende de a foto convencer.
+            </p>
+            <p>
+              Com modelos 3D por SKU, o cliente gira, aproxima e compara cores antes de pedir. Menos dúvida no atendimento, menos troca por expectativa errada, mais tempo em página.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link href="/produto/tenis-nk-air-max-95-x-corteiz-pink-beam" className="display rounded-sm bg-accent px-6 py-3 text-xl text-accent-ink transition hover:brightness-110">
+                Testar o 3D
+              </Link>
+              <Link href="/catalogo" className="display rounded-sm border border-white/30 px-6 py-3 text-xl transition hover:border-accent hover:text-accent">
+                Ver catálogo
+              </Link>
+            </div>
           </div>
         </div>
       </section>

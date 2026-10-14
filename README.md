@@ -1,6 +1,10 @@
 # Boneti 3D — protótipo de redesign
 
-Loja de tênis com **3D interativo**: hero com scroll storytelling, catálogo com cards em tilt 3D e página de produto com visualizador 360° e troca de cor em tempo real.
+Loja streetwear com **3D interativo** e **catálogo real da Boneti** (600 produtos importados da loja Shopify: tênis, camisetas, moletons, conjuntos, calças, shorts, bonés, chinelos e acessórios, com fotos, preços, promoções e tamanhos/estoque reais).
+
+- Hero com scroll storytelling 3D
+- Catálogo com filtros por categoria, modelo/marca, tamanho em estoque, preço e promoção (estado na URL: `/catalogo?cat=tenis&sub=air-max&tam=42`)
+- Página de produto com fotos reais, tamanhos/esgotados, WhatsApp e — para tênis — modo "Ver em 3D" (demo com modelo ilustrativo)
 
 Protótipo de proposta comercial da **HUB33 Inteligência Criativa** para a Boneti Store. O diagnóstico do site atual está em [`docs/DIAGNOSTICO-bonetistore.md`](docs/DIAGNOSTICO-bonetistore.md).
 
@@ -42,12 +46,13 @@ src/
     three/Lighting.tsx      # estúdio procedural (sem HDR externo)
     Hero.tsx · Catalog.tsx · ProductDetail.tsx
     ui/                     # Navbar, Footer, Cart, ProductCard, TiltCard
-  lib/products.ts           # dados de demonstração (9 SKUs = 3 linhas × 3 cores)
+  lib/catalog.ts            # parser do catálogo real + helpers (filtros, imagens do CDN)
+  lib/products.ts           # variantes de cor do modelo 3D ilustrativo
+  data/catalog.json         # 600 produtos reais (formato compacto; ver lib/catalog.ts)
 public/
   models/shoe.glb           # 485 KB (Draco + WebP) — original tinha 7,8 MB
   draco/                    # decoder servido localmente
-  thumbs/*.webp             # pré-renderizadas a partir do GLB
-scripts/render-thumbs.mjs   # gera as thumbs com Playwright
+scripts/render-thumbs.mjs   # (legado) renderiza thumbs do GLB com Playwright
 ```
 
 ## Como o 3D funciona
@@ -58,14 +63,9 @@ scripts/render-thumbs.mjs   # gera as thumbs com Playwright
 - **Cards**: tilt via CSS custom properties (`--rx/--ry/--mx/--my`) atualizadas em `pointermove` — sem re-render do React; camadas com `translateZ` dão profundidade.
 - **Iluminação** é 100% procedural (`<Environment>` + `<Lightformer>`), então não há HDR de 2–8 MB para baixar.
 
-## Regenerar thumbs
+## Catálogo real
 
-```bash
-npm run build && npm run start &
-npm i -D playwright sharp
-node scripts/render-thumbs.mjs            # usa o Chromium do Playwright
-# ou: CHROMIUM_PATH=/caminho/chrome node scripts/render-thumbs.mjs
-```
+`src/data/catalog.json` foi gerado a partir dos endpoints públicos da loja (`/products.json` e `/collections/<handle>/products.json`) em 14/10/2026 — 600 de 967 produtos, suficiente como exemplo. As fotos são servidas direto do CDN da Boneti (`cdn.shopify.com`, liberado em `next.config.ts`). Para atualizar ou completar, repita a coleta e mantenha o formato descrito em `lib/catalog.ts`; em produção isso é substituído pela Storefront API.
 
 ## Deploy na Vercel
 
@@ -73,11 +73,11 @@ Projeto padrão Next — `vercel` ou importar o repositório. Sem variáveis de 
 
 ## O que falta para virar loja real
 
-1. **Catálogo e checkout**: trocar `lib/products.ts` por Shopify Storefront API (a loja atual já está no Shopify) e o carrinho em memória pela Cart API; o botão "Finalizar compra" redireciona para o checkout Shopify.
+1. **Catálogo e checkout**: trocar `data/catalog.json` pela Shopify Storefront API (a loja já está no Shopify — mesmo schema) e o carrinho em memória pela Cart API; "Finalizar compra" redireciona para o checkout Shopify.
 2. **Modelos 3D dos produtos reais**: fotogrametria ou modelagem por SKU, exportados em GLB com `KHR_materials_variants` por cor. O pipeline de otimização (`gltf-transform optimize --compress draco --texture-compress webp`) já está validado: 7,8 MB → 485 KB.
 3. **Identidade visual definitiva** (logo, paleta): os tokens estão centralizados em `globals.css`.
 4. **Analytics/observabilidade**: Vercel Analytics + Sentry em `error.tsx`.
-5. **Rota `/dev/thumb`**: remover ou proteger antes de ir para produção.
+5. **Nomes de produto**: o catálogo usa os nomes como a loja cadastra ("NK Air Max 95", "Corteiz"…). A questão de marcas de terceiros está anotada em `docs/DIAGNOSTICO-bonetistore.md`.
 
 ## Créditos
 

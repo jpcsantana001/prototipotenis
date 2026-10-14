@@ -1,22 +1,23 @@
 @import "tailwindcss";
-@import "@fontsource-variable/space-grotesk";
+@import "@fontsource/anton";
 @import "@fontsource-variable/inter";
 
 /* ------------------------------------------------------------------ */
-/* Design tokens                                                       */
+/* Design tokens — streetwear: preto/branco de alto contraste + lime   */
 /* ------------------------------------------------------------------ */
 :root {
-  --bg: #09090b;
-  --bg-elev: #111114;
-  --bg-card: #141418;
-  --fg: #f4f4f5;
-  --fg-muted: #a1a1aa;
-  --fg-faint: #52525b;
-  --line: rgba(255, 255, 255, 0.08);
-  --accent: #6d5dfc; /* azul-violeta — herdado da faixa do site atual, mais vivo */
-  --accent-2: #ff5c8a; /* rosa do colorway Street */
+  --bg: #0b0b0c;
+  --bg-elev: #121214;
+  --bg-card: #151517;
+  --fg: #f5f5f3;
+  --fg-muted: #a3a3a0;
+  --fg-faint: #5c5c5a;
+  --line: rgba(255, 255, 255, 0.09);
+  --accent: #c8ff3d; /* lime ácido */
+  --accent-ink: #0b0b0c;
+  --accent-2: #ff4d4d; /* vermelho de promo */
   --success: #4ade80;
-  --radius: 1.25rem;
+  --radius: 0.75rem;
 }
 
 @theme inline {
@@ -28,10 +29,11 @@
   --color-fg-faint: var(--fg-faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --color-accent-2: var(--accent-2);
   --color-success: var(--success);
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
   --radius-card: var(--radius);
 }
 
@@ -51,84 +53,110 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: white;
+  color: var(--accent-ink);
 }
 
-/* grade sutil de fundo */
+/* tipografia display: condensada, caixa alta, tracking apertado */
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+}
+.outline {
+  -webkit-text-stroke: 1.5px var(--fg);
+  color: transparent;
+}
+
+/* grão de filme por cima de tudo (bem sutil) */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.7s steps(4) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(3%, 1%); }
+}
+
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
 }
 
-/* glow radial que muda de cor com o colorway */
 .glow {
   background: radial-gradient(circle at 50% 55%, var(--glow, var(--accent)) 0%, transparent 60%);
-  opacity: 0.35;
-  filter: blur(40px);
+  opacity: 0.22;
+  filter: blur(48px);
   transition: background 900ms ease;
 }
 
-/* tilt card: a transformação é aplicada via CSS vars pelo JS */
+/* fita/marquee */
+.tape {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.marquee {
+  animation: marquee 32s linear infinite;
+}
+.marquee-rev {
+  animation: marquee 40s linear infinite reverse;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* tilt card */
 .tilt {
   transform-style: preserve-3d;
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
   transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }
-.tilt:hover {
-  transition: transform 60ms linear;
-}
+.tilt:hover { transition: transform 60ms linear; }
 .tilt-layer {
   transform: translateZ(var(--tz, 0px)) translate(calc(var(--mx, 0) * var(--px, 0px)), calc(var(--my, 0) * var(--py, 0px)));
   transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .tilt-shine {
-  background: radial-gradient(
-    circle at calc(50% + var(--mx, 0) * 50%) calc(50% + var(--my, 0) * 50%),
-    rgba(255, 255, 255, 0.18),
-    transparent 55%
-  );
+  background: radial-gradient(circle at calc(50% + var(--mx, 0) * 50%) calc(50% + var(--my, 0) * 50%), rgba(255, 255, 255, 0.16), transparent 55%);
   opacity: var(--shine, 0);
   transition: opacity 200ms ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .tilt,
-  .tilt-layer {
-    transform: none !important;
-    transition: none !important;
-  }
-  .tilt-shine {
-    display: none;
-  }
+/* sticker/badge rotacionado */
+.sticker {
+  transform: rotate(-6deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* utilidades */
-.text-balance {
-  text-wrap: balance;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .tilt, .tilt-layer { transform: none !important; transition: none !important; }
+  .tilt-shine, .grain::after { display: none; }
+  .marquee, .marquee-rev { animation: none; }
 }
+
+.text-balance { text-wrap: balance; }
 .skeleton {
-  background: linear-gradient(90deg, var(--bg-card) 25%, #1c1c22 50%, var(--bg-card) 75%);
+  background: linear-gradient(90deg, var(--bg-card) 25%, #1d1d20 50%, var(--bg-card) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
 }
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
-  }
-}
+@keyframes shimmer { to { background-position: -200% 0; } }
 
-.marquee {
-  animation: marquee 28s linear infinite;
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }

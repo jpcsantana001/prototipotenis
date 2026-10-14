@@ -2,11 +2,12 @@
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { formatBRL, type Product } from "@/lib/products";
+import Image from "next/image";
+import { formatBRL, img, type Product } from "@/lib/catalog";
 
 export interface CartItem {
   product: Product;
-  size: number;
+  size: string;
   qty: number;
 }
 
@@ -14,8 +15,8 @@ interface CartContextValue {
   items: CartItem[];
   count: number;
   total: number;
-  add: (product: Product, size: number) => void;
-  remove: (slug: string, size: number) => void;
+  add: (product: Product, size: string) => void;
+  remove: (handle: string, size: string) => void;
   open: boolean;
   setOpen: (v: boolean) => void;
 }
@@ -37,9 +38,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  const add = useCallback((product: Product, size: number) => {
+  const add = useCallback((product: Product, size: string) => {
     setItems((prev) => {
-      const idx = prev.findIndex((i) => i.product.slug === product.slug && i.size === size);
+      const idx = prev.findIndex((i) => i.product.handle === product.handle && i.size === size);
       if (idx >= 0) {
         const next = [...prev];
         next[idx] = { ...next[idx], qty: next[idx].qty + 1 };
@@ -47,12 +48,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { product, size, qty: 1 }];
     });
-    setToast(`${product.name} · tam. ${size} adicionado`);
+    setToast(`${product.name}${size ? ` · tam. ${size}` : ""} adicionado`);
     setTimeout(() => setToast(null), 2600);
   }, []);
 
-  const remove = useCallback((slug: string, size: number) => {
-    setItems((prev) => prev.filter((i) => !(i.product.slug === slug && i.size === size)));
+  const remove = useCallback((handle: string, size: string) => {
+    setItems((prev) => prev.filter((i) => !(i.product.handle === handle && i.size === size)));
   }, []);
 
   const value = useMemo<CartContextValue>(() => {
@@ -107,7 +108,7 @@ function CartDrawer() {
             transition={{ type: "spring", stiffness: 320, damping: 34 }}
           >
             <header className="flex items-center justify-between border-b border-line px-6 py-5">
-              <h2 className="font-display text-lg font-semibold">Seu carrinho</h2>
+              <h2 className="display text-2xl">Seu carrinho</h2>
               <button
                 onClick={() => setOpen(false)}
                 className="rounded-full p-2 text-fg-muted hover:bg-white/5 hover:text-fg"
@@ -131,20 +132,23 @@ function CartDrawer() {
               ) : (
                 <ul className="divide-y divide-line">
                   {items.map((i) => (
-                    <li key={`${i.product.slug}-${i.size}`} className="flex gap-4 py-4">
-                      <div
-                        className="h-20 w-20 shrink-0 rounded-xl"
-                        style={{ background: `radial-gradient(circle at 40% 30%, ${i.product.colorway === "Street" ? "#3a3a40" : i.product.colorway === "Beach" ? "#f0cdd1" : "#2a9ae0"}, #111114 75%)` }}
-                      />
+                    <li key={`${i.product.handle}-${i.size}`} className="flex gap-4 py-4">
+                      <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-bg-card">
+                        {i.product.images[0] && (
+                          <Image src={img(i.product.images[0], 200)} alt="" fill sizes="64px" className="object-cover" />
+                        )}
+                      </div>
                       <div className="flex flex-1 flex-col">
                         <span className="text-sm font-medium">{i.product.name}</span>
                         <span className="text-xs text-fg-muted">
-                          Tam. {i.size} · {i.qty}×
+                          {i.product.variantLabel ? `${i.product.variantLabel} · ` : ""}
+                          {i.size ? `Tam. ${i.size} · ` : ""}
+                          {i.qty}×
                         </span>
                         <span className="mt-auto text-sm">{formatBRL(i.product.price * i.qty)}</span>
                       </div>
                       <button
-                        onClick={() => remove(i.product.slug, i.size)}
+                        onClick={() => remove(i.product.handle, i.size)}
                         className="self-start text-xs text-fg-faint hover:text-accent-2"
                       >
                         Remover
@@ -162,7 +166,7 @@ function CartDrawer() {
               </div>
               <button
                 disabled={items.length === 0}
-                className="w-full rounded-full bg-fg py-3.5 text-sm font-semibold text-bg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                className="display w-full rounded-sm bg-accent py-3.5 text-xl text-accent-ink transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Finalizar compra
               </button>
