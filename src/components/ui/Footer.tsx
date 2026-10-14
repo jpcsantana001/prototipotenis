@@ -15,7 +15,7 @@ export function Footer() {
             BONETI<span className="text-accent">.</span>
           </div>
           <p className="mt-3 max-w-xs text-sm text-fg-muted">
-            Streetwear e sneakers em Umuarama-PR, enviando para todo o Brasil. Atendimento de segunda a sábado, 9h–18h, pelo WhatsApp (45) 99142-2244.
+            Streetwear e sneakers em Foz do Iguaçu-PR, enviando para todo o Brasil. Atendimento de segunda a sábado, 9h–18h, pelo WhatsApp (45) 99142-2244.
           </p>
           <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-widest text-fg-faint">
             <span className="rounded-sm border border-line px-2.5 py-1">Pix 5% off</span>

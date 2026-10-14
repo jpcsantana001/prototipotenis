@@ -24,7 +24,7 @@ interface Chapter {
 const CHAPTERS: Chapter[] = [
   {
     range: [0, 0.18],
-    eyebrow: "Boneti Store · Umuarama → Brasil",
+    eyebrow: "Boneti Store · Foz do Iguaçu → Brasil",
     title: (
       <>
         Veja antes

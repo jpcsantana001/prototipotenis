@@ -97,7 +97,7 @@ export function StreetBackdrop({ progress }: { progress: MotionValue<number> }) 
 
       {/* pichações pequenas espalhadas */}
       {/* nos cantos, longe dos textos dos capítulos (meio-esquerda, meio-direita e base central) */}
-      <span className="marker absolute left-[4%] top-[14%] hidden rotate-[-8deg] text-3xl text-white/30 md:block">Umuarama</span>
+      <span className="marker absolute left-[4%] top-[14%] hidden rotate-[-8deg] text-3xl text-white/30 md:block">Foz do Iguaçu</span>
       <span className="marker absolute right-[4%] top-[13%] hidden rotate-[6deg] text-2xl text-accent-2/55 md:block">+100k pedidos</span>
       <span className="marker absolute bottom-[8%] right-[5%] hidden rotate-[-4deg] text-2xl text-white/25 md:block">since day one</span>
 
