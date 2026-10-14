@@ -2,7 +2,7 @@
 
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
+import { ContactShadows, useProgress } from "@react-three/drei";
 import { MathUtils } from "three";
 import type { Group } from "three";
 import type { MotionValue } from "motion/react";
@@ -124,9 +124,23 @@ interface HeroSceneProps {
   isMobile?: boolean;
 }
 
+/** Indicador de download do modelo (fora do Canvas). */
+function HeroLoader() {
+  const { active, progress } = useProgress();
+  if (!active) return null;
+  return (
+    <div className="pointer-events-none absolute left-1/2 top-[38vh] flex -translate-x-1/2 flex-col items-center gap-2 text-fg-muted" aria-live="polite">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/15 border-t-accent" />
+      <span className="text-[10px] uppercase tracking-[0.3em]">Carregando 3D · {Math.round(progress)}%</span>
+    </div>
+  );
+}
+
 export function HeroScene({ progress, variant, reducedMotion = false, isMobile = false }: HeroSceneProps) {
   const accent = COLORWAYS[variant].accent;
   return (
+    <>
+    <HeroLoader />
     <Canvas
       camera={{ position: [0, 0, 5.5], fov: 30, near: 0.1, far: 50 }}
       dpr={[1, 1.75]}
@@ -141,5 +155,6 @@ export function HeroScene({ progress, variant, reducedMotion = false, isMobile =
         <ContactShadows position={[0, -1.35, 0]} opacity={0.55} scale={8} blur={2.4} far={3} color="#000" />
       </Suspense>
     </Canvas>
+    </>
   );
 }
