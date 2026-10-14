@@ -13,7 +13,7 @@ export const LOGO_URL = `${CDN}LogoBonetiBranca.png`;
 export const LOGO_RATIO = 2.33;
 
 /**
- * Fundo do hero: ilustração cartoon com pixes/graffiti urbano (estilo street art).
- * SVG customizado (1580×470) com tema "Foz do Iguaçu", pichações, prédios e vibe urbana.
+ * Fundo do hero: paisagem minimalista de Foz do Iguaçu ao entardecer.
+ * Mostra as Cataratas, Marco das Três Fronteiras e Ponte da Amizade ao pôr do sol.
  */
-export const HERO_PHOTO_URL = `/hero-street-art.svg`;
+export const HERO_PHOTO_URL = `/hero-foz-do-iguacu.png`;
