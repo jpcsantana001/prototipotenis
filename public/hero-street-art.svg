@@ -2,13 +2,13 @@
   <!-- Fundo degradado urbano -->
   <defs>
     <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#0a0a14;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d0d1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050510;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="streetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#2a2a3e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#1a1a24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a12;stop-opacity:1" />
     </linearGradient>
     <filter id="glow">
       <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
@@ -31,7 +31,7 @@
   <rect x="1360" y="200" width="220" height="270" fill="#0d0d1a"/>
 
   <!-- Janelas nos prédios -->
-  <g fill="#ffd700" opacity="0.4">
+  <g fill="#ffd700" opacity="0.15">
     <rect x="20" y="220" width="20" height="20"/>
     <rect x="50" y="220" width="20" height="20"/>
     <rect x="20" y="260" width="20" height="20"/>
@@ -43,7 +43,7 @@
   </g>
 
   <!-- Mais janelas -->
-  <g fill="#ffaa00" opacity="0.3">
+  <g fill="#ffaa00" opacity="0.12">
     <rect x="310" y="250" width="18" height="18"/>
     <rect x="340" y="250" width="18" height="18"/>
     <rect x="310" y="290" width="18" height="18"/>
@@ -127,4 +127,7 @@
   <!-- Névoa/efeito de spray no fundo -->
   <ellipse cx="400" cy="250" rx="150" ry="100" fill="#ff00ff" opacity="0.05"/>
   <ellipse cx="1200" cy="300" rx="180" ry="120" fill="#00d9ff" opacity="0.05"/>
+
+  <!-- Camada escura por cima para deixar fosco -->
+  <rect width="1580" height="470" fill="#000000" opacity="0.45"/>
 </svg>
