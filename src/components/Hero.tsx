@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { COLORWAYS, type VariantName } from "@/lib/products";
 import { variantForProgress } from "@/components/three/HeroScene";
+import { StreetBackdrop } from "@/components/StreetBackdrop";
 
 const HeroScene = dynamic(() => import("@/components/three/HeroScene").then((m) => m.HeroScene), {
   ssr: false,
@@ -98,7 +99,7 @@ function ChapterBlock({ chapter, progress }: { chapter: Chapter; progress: Motio
       style={{ opacity, y }}
       className={`pointer-events-none absolute flex w-full max-w-2xl flex-col gap-4 px-6 sm:px-10 md:max-w-xl ${pos} max-md:inset-x-0 max-md:bottom-[8vh] max-md:top-auto max-md:translate-x-0 max-md:translate-y-0 max-md:items-start max-md:text-left`}
     >
-      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">{chapter.eyebrow}</span>
+      <span className="marker text-lg text-accent sm:text-xl">{chapter.eyebrow}</span>
       <h2 className="display text-balance text-6xl sm:text-7xl md:text-8xl">{chapter.title}</h2>
       <p className="max-w-md text-balance text-sm text-fg-muted sm:text-base">{chapter.body}</p>
     </motion.div>
@@ -133,13 +134,8 @@ export function Hero() {
   return (
     <section ref={ref} className="relative h-[420vh]" aria-label="Apresentação">
       <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="bg-grid absolute inset-0" aria-hidden />
+        <StreetBackdrop progress={scrollYProgress} />
         <div className="glow absolute inset-0" style={{ ["--glow" as string]: COLORWAYS[variant].accent }} aria-hidden />
-
-        {/* wordmark gigante atrás do tênis */}
-        <div className="pointer-events-none absolute inset-x-0 top-[18vh] flex justify-center" aria-hidden>
-          <span className="display text-[26vw] leading-none text-white/[0.035]">BONETI</span>
-        </div>
 
         <HeroScene progress={scrollYProgress} variant={variant} reducedMotion={reduced} isMobile={isMobile} />
 

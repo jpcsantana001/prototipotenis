@@ -26,7 +26,7 @@ interface Key {
 
 const KEYS: Key[] = [
   // capítulo 0 — hero: 3/4 de frente, flutuando
-  { t: 0.0, rotY: -0.6, rotX: 0.15, rotZ: -0.15, x: 0.0, y: 0.68, scale: 4.3 },
+  { t: 0.0, rotY: -0.6, rotX: 0.15, rotZ: -0.15, x: 0.0, y: 1.02, scale: 3.9 },
   // capítulo 1 — construção: perfil lateral, aproxima
   { t: 0.25, rotY: 0.08, rotX: 0.12, rotZ: 0.0, x: 0.9, y: 0.0, scale: 6.6 },
   // capítulo 2 — cores: gira 360° enquanto troca de cor

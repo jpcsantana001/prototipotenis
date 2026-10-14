@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "@fontsource/anton";
 @import "@fontsource-variable/inter";
+@import "@fontsource/sedgwick-ave-display";
+@import "@fontsource/permanent-marker";
 
 /* ------------------------------------------------------------------ */
 /* Design tokens — streetwear: preto/branco de alto contraste + lime   */
@@ -160,3 +162,26 @@ body {
 
 .scrollbar-none { scrollbar-width: none; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ------------------------------------------------------------------ */
+/* Grafite                                                              */
+/* ------------------------------------------------------------------ */
+.tag-font {
+  font-family: "Sedgwick Ave Display", "Permanent Marker", cursive;
+}
+.marker {
+  font-family: "Permanent Marker", "Sedgwick Ave Display", cursive;
+  letter-spacing: 0.02em;
+}
+/* retícula de impressão (halftone) */
+.halftone {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1.2px);
+  background-size: 6px 6px;
+}
+/* mancha de spray lime */
+.spray {
+  background:
+    radial-gradient(closest-side, rgba(200, 255, 61, 0.28), rgba(200, 255, 61, 0.08) 55%, transparent 75%);
+  filter: blur(18px);
+  transition: background 900ms ease;
+}
