@@ -37,10 +37,10 @@ export function ProductImage({ product, priority = false, sizes }: { product: Pr
 export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const line = product.subs.find((s) => SUB_LABELS[s]);
   return (
-    <TiltCard className="group rounded-card" max={6}>
+    <TiltCard className="group h-full rounded-card" max={6}>
       <Link
         href={`/produto/${product.handle}`}
-        className="block overflow-hidden rounded-card border border-line bg-bg-card transition-colors hover:border-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+        className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-bg-card transition-colors hover:border-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
       >
         <div className="relative aspect-[4/5] overflow-hidden bg-bg-elev">
           <ProductImage product={product} priority={priority} sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 90vw" />
@@ -71,16 +71,17 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           )}
         </div>
 
-        <div className="p-3.5">
-          {line && <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">{SUB_LABELS[line]}</p>}
-          <h3 className="line-clamp-1 text-sm font-semibold">{product.name}</h3>
-          {product.variantLabel && <p className="line-clamp-1 text-xs text-fg-muted">{product.variantLabel}</p>}
-          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-2">
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-semibold">{formatBRL(product.price)}</span>
-              {product.compareAt && <s className="text-[11px] text-fg-faint">{formatBRL(product.compareAt)}</s>}
+        {/* bloco de texto com altura fixa: linha, nome, variação e preço sempre ocupam o mesmo espaço */}
+        <div className="flex flex-1 flex-col p-3.5">
+          <p className="mb-0.5 h-4 truncate text-[10px] font-semibold uppercase leading-4 tracking-[0.2em] text-accent">{line ? SUB_LABELS[line] : "\u00a0"}</p>
+          <h3 className="truncate text-sm font-semibold leading-5">{product.name}</h3>
+          <p className="h-4 truncate text-xs leading-4 text-fg-muted">{product.variantLabel || "\u00a0"}</p>
+          <div className="mt-auto flex items-baseline justify-between gap-2 pt-2">
+            <div className="flex min-w-0 items-baseline gap-1.5">
+              <span className="shrink-0 font-semibold">{formatBRL(product.price)}</span>
+              {product.compareAt && <s className="truncate text-[11px] text-fg-faint">{formatBRL(product.compareAt)}</s>}
             </div>
-            <span className="text-[10px] text-fg-muted">12x {installment(product.price)}</span>
+            <span className="hidden shrink-0 text-[10px] text-fg-muted sm:inline">12x {installment(product.price)}</span>
           </div>
         </div>
       </Link>
@@ -92,10 +93,11 @@ export function ProductCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-card border border-line bg-bg-card">
       <div className="skeleton aspect-[4/5]" />
-      <div className="space-y-2 p-3.5">
+      <div className="space-y-1.5 p-3.5">
         <div className="skeleton h-3 w-1/3 rounded" />
         <div className="skeleton h-4 w-2/3 rounded" />
         <div className="skeleton h-3 w-1/2 rounded" />
+        <div className="skeleton mt-3 h-4 w-2/5 rounded" />
       </div>
     </div>
   );

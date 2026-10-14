@@ -62,15 +62,16 @@ export default function Home() {
         <h2 id="cats" className="sr-only">
           Categorias
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-2">
-          {CATEGORIES.slice(0, 7).map((c, i) => {
+        {/* 4 colunas × 3 linhas: Tênis ocupa 2×2, 7 categorias + promo fecham a grade sem buracos */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:auto-rows-[15rem] md:grid-cols-4">
+          {CATEGORIES.slice(0, 8).map((c, i) => {
             const p = cover(c.key);
             const big = i === 0;
             return (
               <Link
                 key={c.key}
                 href={`/catalogo?cat=${c.key}`}
-                className={`group relative overflow-hidden rounded-card border border-line bg-bg-card ${big ? "col-span-2 row-span-2 aspect-square md:aspect-auto" : "aspect-[4/5] md:aspect-auto md:min-h-56"}`}
+                className={`group relative overflow-hidden rounded-card border border-line bg-bg-card ${big ? "col-span-2 aspect-square md:row-span-2 md:aspect-auto" : "aspect-[4/5] md:aspect-auto"}`}
               >
                 {p?.images[0] && (
                   <Image src={img(p.images[0], big ? 1200 : 700)} alt="" fill sizes={big ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"} className="object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
@@ -83,7 +84,7 @@ export default function Home() {
               </Link>
             );
           })}
-          <Link href="/catalogo?promo=1" className="group relative flex aspect-[4/5] items-end overflow-hidden rounded-card bg-accent p-4 text-accent-ink sm:p-5 md:aspect-auto md:min-h-56">
+          <Link href="/catalogo?promo=1" className="group relative flex aspect-[4/5] items-end overflow-hidden rounded-card bg-accent p-4 text-accent-ink sm:p-5 md:aspect-auto">
             <span className="display text-3xl leading-[0.9] sm:text-4xl">
               Até
               <br />
@@ -110,7 +111,7 @@ export default function Home() {
               Todos os tênis →
             </Link>
           </div>
-          <div className="scrollbar-none -mx-5 flex snap-x gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:px-0 lg:grid-cols-8">
+          <div className="scrollbar-none -mx-5 flex snap-x gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:px-0 xl:grid-cols-8">
             {sneakers.map((s) => {
               const p = bySub(s).find((x) => x.available && x.images[0]);
               return (
@@ -118,9 +119,9 @@ export default function Home() {
                   <div className="relative aspect-square">
                     {p?.images[0] && <Image src={img(p.images[0], 500)} alt="" fill sizes="(min-width: 1024px) 12vw, 40vw" className="object-cover transition duration-500 group-hover:scale-105" />}
                   </div>
-                  <div className="flex items-center justify-between px-3 py-2.5">
-                    <span className="display text-xl">{SUB_LABELS[s]}</span>
-                    <span className="text-[10px] text-fg-muted">{subCounts[s]}</span>
+                  <div className="flex items-center justify-between gap-2 px-3 py-2.5">
+                    <span className="display truncate text-xl xl:text-base 2xl:text-lg">{SUB_LABELS[s]}</span>
+                    <span className="shrink-0 text-[10px] text-fg-muted">{subCounts[s]}</span>
                   </div>
                 </Link>
               );
@@ -137,10 +138,10 @@ export default function Home() {
             As marcas da rua
           </h2>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {brands.map((b) => (
-            <Link key={b} href={`/catalogo?sub=${b}`} className="display rounded-sm border border-line px-5 py-3 text-3xl transition hover:border-accent hover:text-accent sm:text-4xl">
-              {SUB_LABELS[b]} <span className="text-base text-fg-faint">{subCounts[b]}</span>
+            <Link key={b} href={`/catalogo?sub=${b}`} className="display flex h-20 items-center justify-between gap-3 rounded-sm border border-line px-4 text-base min-[380px]:text-lg transition hover:border-accent hover:text-accent sm:px-5 sm:text-2xl xl:text-3xl">
+              <span className="truncate">{SUB_LABELS[b]}</span> <span className="shrink-0 text-base text-fg-faint">{subCounts[b]}</span>
             </Link>
           ))}
         </div>
