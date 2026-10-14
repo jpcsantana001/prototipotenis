@@ -27,33 +27,33 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Boneti Store · Foz do Iguaçu → Brasil",
     title: (
       <>
-        Veja antes
+        As melhores
         <br />
-        de <span className="text-accent">calçar.</span>
+        peças você <span className="text-accent">encontra aqui.</span>
       </>
     ),
-    body: "Sneakers e streetwear com visualização 3D. Gire, aproxime, troque de cor — e compre com a certeza de quem já experimentou.",
+    body: "Streetwear e sneakers de grife. Camisetas, calças, bonés, tênis e muito mais — tudo com qualidade garantida.",
     align: "center",
   },
   {
     range: [0.22, 0.42],
-    eyebrow: "Cada detalhe",
-    title: "Costura, solado, cadarço. Tudo à vista.",
-    body: "No site atual você compra por uma foto. Aqui, cada tênis vira um objeto que você examina como na loja.",
+    eyebrow: "Segurança na compra",
+    title: "Aqui você tem segurança.",
+    body: "Compre com confiança. Marcas de artista, produtos 100% originais e autênticos. Troca grátis em 30 dias.",
     align: "left",
   },
   {
     range: [0.47, 0.68],
-    eyebrow: "Troca de cor em tempo real",
-    title: "Street. Midnight. Beach.",
-    body: "Compare colorways no mesmo ângulo, sem recarregar. O que você vê é o que chega.",
+    eyebrow: "Marcas de artista",
+    title: "SYNA · CORTEIZ · SUPREME",
+    body: "Os melhores nomes do streetwear mundial na Boneti. Chrome Hearts, BAPE, Trapstar, Denim Tears, SP5DER e mais.",
     align: "right",
   },
   {
     range: [0.74, 1],
-    eyebrow: "+600 produtos reais no catálogo",
-    title: "Explore o drop.",
-    body: "Air Max, Dunk, Jordan, 12 Molas, Corteiz, Syna, Supreme e mais — em até 12x, com troca grátis em 30 dias.",
+    eyebrow: "+ de 100 mil pedidos enviados",
+    title: "Confiança que voa.",
+    body: "Mais de 100 mil clientes em todo Brasil confiam na Boneti. Envios rápidos, atendimento premium e satisfação garantida.",
     align: "left",
   },
 ];
