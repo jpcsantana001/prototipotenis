@@ -13,8 +13,7 @@ export const LOGO_URL = `${CDN}LogoBonetiBranca.png`;
 export const LOGO_RATIO = 2.33;
 
 /**
- * Foto da campanha da loja (banner "3_DESKTOP", 1580×800). Pedimos ao CDN só os
- * 470 px de baixo (crop=bottom): fica a galera de capuz e sai o texto
- * "Bem vindo / cupom" que vem impresso na arte do banner.
+ * Fundo do hero: ilustração cartoon com pixes/graffiti urbano (estilo street art).
+ * SVG customizado (1580×470) com tema "Foz do Iguaçu", pichações, prédios e vibe urbana.
  */
-export const HERO_PHOTO_URL = `${CDN}3_DESKTOP.png?width=1580&height=470&crop=bottom`;
+export const HERO_PHOTO_URL = `/hero-street-art.svg`;
