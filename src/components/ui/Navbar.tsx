@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCart } from "./Cart";
+import { BrandLogo } from "./BrandLogo";
 import { CATEGORIES, SNEAKER_LINES, STREET_BRANDS, SUB_LABELS } from "@/lib/catalog";
 
 const TOP = [
@@ -54,8 +55,8 @@ export function Navbar() {
       </div>
 
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="display text-3xl leading-none" aria-label="Boneti Store — início">
-          BONETI<span className="text-accent">.</span>
+        <Link href="/" aria-label="Boneti Store — início" className="shrink-0">
+          <BrandLogo className="w-24 sm:w-28" priority sizes="112px" />
         </Link>
 
         <nav className="hidden items-center gap-6 text-[13px] font-medium uppercase tracking-wider text-fg-muted lg:flex" aria-label="Principal">

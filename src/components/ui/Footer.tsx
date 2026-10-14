@@ -1,19 +1,18 @@
 import Link from "next/link";
+import { BrandLogo } from "./BrandLogo";
 import { CATEGORIES, STREET_BRANDS, SUB_LABELS } from "@/lib/catalog";
 
 export function Footer() {
   return (
     <footer className="border-t border-line bg-bg-elev">
       <div className="mx-auto max-w-[1400px] px-5 pt-14 sm:px-8">
-        <p className="display text-[18vw] leading-[0.8] text-white/[0.04] sm:text-[12vw]" aria-hidden>
-          Boneti
-        </p>
+        <div aria-hidden>
+          <BrandLogo className="w-[70vw] opacity-[0.05] sm:w-[45vw]" sizes="70vw" />
+        </div>
       </div>
       <div className="mx-auto grid max-w-[1400px] gap-10 px-5 pb-14 sm:px-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div>
-          <div className="display text-3xl">
-            BONETI<span className="text-accent">.</span>
-          </div>
+          <BrandLogo className="w-36" sizes="144px" />
           <p className="mt-3 max-w-xs text-sm text-fg-muted">
             Streetwear e sneakers em Foz do Iguaçu-PR, enviando para todo o Brasil. Atendimento de segunda a sábado, 9h–18h, pelo WhatsApp (45) 99142-2244.
           </p>
